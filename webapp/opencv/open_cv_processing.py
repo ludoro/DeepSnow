@@ -20,18 +20,13 @@ def open_cv_processing(im):
         for i in range(0,len(contours)):
             #calculate centroid
             M = cv2.moments(contours[i])
-
-            if( M['m00'] == 0 ):
-                pass
-            else:
-                x = int(M['m10']/M['m00'])
-                y = int(M['m01']/M['m00'])
-
-                #distance from center
-                distance = np.sqrt((x-256)^2 + (y-256)^2)
-                if (distance < minimum_distance):
-                    minimum_distance = distance
-                    index = i
+            x = int(M['m10']/M['m00'])
+            y = int(M['m01']/M['m00'])
+            #distance from center
+            distance = np.sqrt((x-256)^2 + (y-256)^2)
+            if (distance < minimum_distance):
+                minimum_distance = distance
+                index = i
 
     Area = cv2.contourArea(contours[index])
     print(Area, "pixels")
