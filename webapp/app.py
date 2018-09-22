@@ -46,9 +46,10 @@ def image_prediction():
 
         image_cv = np.array(image)
         poly_json, area = open_cv_processing(image_cv)
+
         #data["predictions"] = []
 
-        return poly_json, str(area)
+        return poly_json
 
     return 'No Image given!'
 

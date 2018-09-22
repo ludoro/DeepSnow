@@ -3,11 +3,15 @@ import cv2
 import json
 
 def open_cv_processing(im):
-    im = cv2.imread(im)
+
+    #im = cv2.imread(im)
     #it may need to be inverted here
     # im = cv2.bitwise_not(im)
-    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    _,imgray = cv2.threshold(imgray, 127,1,cv2.THRESH_BINARY)
+    try:
+        imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    except:
+        print('Image is already in greyscale')
+    _,imgray = cv2.threshold(im, 127,1,cv2.THRESH_BINARY)
     #image = cv2.fastNlMeansDenoising(imgray,None,10,7,21)
     kernel = np.ones((15,15),np.uint8)
     image = cv2.morphologyEx(imgray, cv2.MORPH_CLOSE, kernel)
@@ -50,9 +54,12 @@ def open_cv_processing(im):
 
     #Saves the image on that name, so when we use front end we just use img = ...
 
-    cv2.imwrite("image_with_contour.jpg",im)
-    cv2.imshow("draw contours",im)
-    cv2.waitKey(0)
+    # save image and show it
+    # cv2.imwrite("image_with_contour.jpg",im)
+    # cv2.imshow("draw contours",im)
+    # cv2.waitKey(0)
 
     #We can change the return values if we need to
+    #json string is a list of points in reference to uppermost pixel
+
     return json_string, Area
