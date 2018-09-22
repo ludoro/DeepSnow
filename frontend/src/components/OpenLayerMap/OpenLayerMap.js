@@ -21,18 +21,20 @@ import BingMaps from 'ol/source/BingMaps.js';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 import Poligon from 'ol/geom/Polygon';
 
+import { saveAs } from 'file-saver/FileSaver';
+
 import file from '../../assets/GeokatalogExport.gml';
 import kml_file from '../../assets/2012-02-10.kml';
+
 class OpenLayerMap extends Component {
 
     constructor(props) {
-        super(props)
-    }
+        super(props);
+        this.mapRef = React.createRef();
+        this.map = "";
+        this.layers = [];
 
-    shouldComponenUpdate() {
-        return false;
     }
-
 
     componentDidMount() {
         var style = new Style({
@@ -56,33 +58,28 @@ class OpenLayerMap extends Component {
         });
 
         //------------------------------------------
-
+        // Layer config
+        //------------------------------------------
         var raster = new TileLayer({
             source: new BingMaps({
                 imagerySet: 'Aerial',
                 key: 'AtfUaJMvupeiWSIg5zr0I4oa4yT-SWqhIzGdg3sNN8trkH-6XrwgKCuKwlukXG-Z'
             })
         });
-
         //------------------------------------------
-
         var KML_vector = new VectorLayer({
             source: new VectorSource({
                 url: kml_file,
                 format: new KML()
             })
         });
-
-
         var GML_vector = new VectorLayer({
             source: new VectorSource({
                 url: file,
                 format: new GML()
             })
         });
-
         //------------------------------------------
-
         var source = new VectorSource();
         var Draw_vector = new VectorLayer({
             source: source,
@@ -102,29 +99,40 @@ class OpenLayerMap extends Component {
                 })
             })
         });
-
         //------------------------------------------
 
 
-        var map = new Map({
-            layers: [
-                new TileLayer({
-                    source: new OSM()
-                }),
-                raster,
-                KML_vector,
-                Draw_vector,
-            ],
-            target: this.refs.map,
+        //------------------------------------------
+        // Create map
+        //------------------------------------------
+
+        this.layers = [
+            new TileLayer({
+                source: new OSM()
+            }),
+            raster,
+            KML_vector,
+            Draw_vector,
+        ];
+
+        var options = {
+            layers: this.layers,
+            target: this.mapRef.current,
             view: new View({
                 center: [this.props.lat, this.props.lon],
                 projection: 'EPSG:3857',
                 zoom: this.props.zoom
             })
-        });
+        };
 
+        this.map = new Map(options);
+
+
+        //------------------------------------------
+        // Handlers
+        //------------------------------------------
         var modify = new Modify({source: source});
-        map.addInteraction(modify);
+        this.map.addInteraction(modify);
 
         var draw, snap; // global so we can remove them later
         var typeSelect = 'Point';
@@ -133,18 +141,31 @@ class OpenLayerMap extends Component {
             source: source,
             type: typeSelect
         });
-        map.addInteraction(draw);
+        this.map.addInteraction(draw);
         snap = new Snap({source: source});
-        map.addInteraction(snap);
+        this.map.addInteraction(snap);
 
-        console.log(map)
+        this.map.on('click', function(event) {
+            console.log('i am here');
+            console.log(event.coordinate);
+            console.log(event.pixel);
+            console.log(event.originalEvent.srcElement);
+            
+
+            event.originalEvent.srcElement.toBlob(function(blob) {
+                saveAs(blob, 'map.png');
+            });
+
+        })
 
     }
 
     render() {
         return (
-            <div id="map" ref="map">
+
+            <div id="map" ref={this.mapRef}>
             </div>
+
         )
     }
 }
