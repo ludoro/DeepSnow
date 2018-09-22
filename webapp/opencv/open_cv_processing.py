@@ -6,7 +6,9 @@ def open_cv_processing(im):
     #it may need to be inverted here
     # im = cv2.bitwise_not(im)
     imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    image = cv2.fastNlMeansDenoising(imgray,None,10,7,21)
+    #image = cv2.fastNlMeansDenoising(imgray,None,10,7,21)
+    kernel = np.ones((10,10),np.uint8)
+    image = cv2.morphologyEx(imgray, cv2.MORPH_OPEN, kernel)
     ret, thresh = cv2.threshold(image, 127, 255, 0)
     im2, contours, hiearchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     Area = cv2.contourArea(contours[0])
