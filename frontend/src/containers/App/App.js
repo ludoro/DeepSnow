@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import logo from '../../assets/img/logo.svg';
+import OpenMap from '../../components/OpenLayerMap/OpenMap';
+import Header from '../../components/Header/Header';
 import '../../assets/scss/App.css';
 
 
@@ -12,9 +13,9 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-
-                <a href="https://github.com/allenhwkim/react-openlayers/blob/master/app/controls/overview-map.tsx">source</a>
+            <div className="App">
+                <Header/>
+                <OpenMap lat={739218} lon={5906096} zoom={8}></OpenMap>
             </div>
         );
     }
