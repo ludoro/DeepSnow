@@ -8,9 +8,9 @@
 import * as types from '../actions/actionTypes';
 import axios from 'axios';
 
-const protocol = types.IFTTT_API_HTTPS ?  'https://': 'http://';
-const port = types.IFTTT_API_PORT ? ':'+ types.IFTTT_API_PORT: '';
-const apiUrl = protocol + types.IFTTT_API_URL + port + types.IFTTT_API_PEFIX;
+const protocol = types.BACKEND_API_HTTPS ?  'https://': 'http://';
+const port = types.BACKEND_API_PORT ? ':'+ types.BACKEND_API_PORT: '';
+const apiUrl = protocol + types.BACKEND_API_URL + port + types.BACKEND_API_PEFIX;
 
 export default axios.create({
     baseURL: apiUrl,

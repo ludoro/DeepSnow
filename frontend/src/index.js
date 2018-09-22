@@ -6,10 +6,11 @@ import { Switch, Route } from 'react-router-dom';
 import indexRoutes from './indexRoutes';
 import configureStore, { history } from './store/configureStore';
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
 
+import './assets/scss/App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
-const  stor= configureStore();
+const  store= configureStore();
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
