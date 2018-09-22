@@ -159,3 +159,9 @@ typings/
 
 =======
 /neuronal_network/unet/unet_membrane.hdf5
+/webapp/unet_membrane.hdf5
+/webapp/__pycache__/
+**/__pycache__/**/*
+/frontend/node_modules/**/*
+/frontend/node_modules
+

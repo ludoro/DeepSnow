@@ -127,20 +127,17 @@ class OpenLayerMap extends Component {
         map.addInteraction(modify);
 
         var draw, snap; // global so we can remove them later
-        var typeSelect = 'Polygon';
+        var typeSelect = 'Point';
 
-        function addInteractions() {
-            draw = new Draw({
-                source: source,
-                type: typeSelect
-            });
-            map.addInteraction(draw);
-            snap = new Snap({source: source});
-            map.addInteraction(snap);
+        draw = new Draw({
+            source: source,
+            type: typeSelect
+        });
+        map.addInteraction(draw);
+        snap = new Snap({source: source});
+        map.addInteraction(snap);
 
-        }
-
-        addInteractions();
+        console.log(map)
 
     }
 
