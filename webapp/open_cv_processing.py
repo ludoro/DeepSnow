@@ -42,9 +42,8 @@ def open_cv_processing(im):
     epsilon = magic_value*cv2.arcLength(contours[index],True)
     approx = cv2.approxPolyDP(contours[index],epsilon,True)
     cv2.drawContours(im, [approx], -1, (255,255,0), 3)
-    np_array_to_list = approx[0].tolist()
-    json_file = "file.json"
-    json.dumps(np_array_to_list)
+    np_array_to_list = approx.tolist()
+    json_string= json.dumps(np_array_to_list)
 
     #If we want the full contour
     #cv2.drawContours(im,contours,-1, (255,255,0), 3)
@@ -52,8 +51,8 @@ def open_cv_processing(im):
     #Saves the image on that name, so when we use front end we just use img = ...
 
     cv2.imwrite("image_with_contour.jpg",im)
-    #cv2.imshow("draw contours",im)
+    cv2.imshow("draw contours",im)
     cv2.waitKey(0)
 
     #We can change the return values if we need to
-    return json_file, Area
+    return json_string, Area
