@@ -13,6 +13,8 @@ class ProcessImage(Resource):
         args = parser.parse_args()
         image = args["image"]
         binary_image_output = run_model(image)
+        open_cv_processing(binary_image_output)
+        return image_with_contour.jpg
 
 
 @app.route("/")
