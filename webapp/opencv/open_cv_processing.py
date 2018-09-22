@@ -13,14 +13,29 @@ def open_cv_processing(im):
     image = cv2.morphologyEx(imgray, cv2.MORPH_CLOSE, kernel)
     ret, thresh = cv2.threshold(image, 0.5, 1, 0)
     im2, contours, hiearchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    Area = cv2.contourArea(contours[0])
+    index = 0
+    if (len(contours) > 1):
+        minimum_distance = 10000000
+        index = 0;
+        for i in range(0,len(contours)):
+            #calculate centroid
+            M = cv2.moments(contours[i])
+            x = int(M['m10']/M['m00'])
+            y = int(M['m01']/M['m00'])
+            #distance from center
+            distance = np.sqrt((x-256)^2 + (y-256)^2)
+            if (distance < minimum_distance):
+                minimum_distance = distance
+                index = i
+
+    Area = cv2.contourArea(contours[index])
     print(Area, "pixels")
 
 
     #If we want the polygon
     magic_value = 0.01
-    epsilon = magic_value*cv2.arcLength(contours[0],True)
-    approx = cv2.approxPolyDP(contours[0],epsilon,True)
+    epsilon = magic_value*cv2.arcLength(contours[index],True)
+    approx = cv2.approxPolyDP(contours[index],epsilon,True)
     cv2.drawContours(im, [approx], -1, (255,255,0), 3)
     np_array_to_list = approx[0].tolist()
     json_file = "file.json"
