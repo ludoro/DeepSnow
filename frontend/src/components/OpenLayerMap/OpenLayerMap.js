@@ -20,8 +20,11 @@ import GML from 'ol/format/GML.js';
 import BingMaps from 'ol/source/BingMaps.js';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 import Poligon from 'ol/geom/Polygon';
-
 import { saveAs } from 'file-saver/FileSaver';
+
+import { connect } from "react-redux";
+import * as actions from "../../actions/backendActions";
+
 
 import file from '../../assets/GeokatalogExport.gml';
 import kml_file from '../../assets/2012-02-10.kml';
@@ -150,10 +153,11 @@ class OpenLayerMap extends Component {
             console.log(event.coordinate);
             console.log(event.pixel);
             console.log(event.originalEvent.srcElement);
-            
+
 
             event.originalEvent.srcElement.toBlob(function(blob) {
-                saveAs(blob, 'map.png');
+                //saveAs(blob, 'map.png');
+                this.props.sendImage(blob, event.coordinate)
             });
 
         })
@@ -170,7 +174,20 @@ class OpenLayerMap extends Component {
     }
 }
 
-export default OpenLayerMap;
+
+const mapStateToProps = (state, props) => {
+    return {
+        backendData: state.backendData,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendImage: (image, coordinates) => dispatch(actions.sendImage(image, coordinates))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpenLayerMap);
 
 OpenLayerMap.propTypes = {
     lat: PropTypes.number,

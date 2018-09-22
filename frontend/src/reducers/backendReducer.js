@@ -11,19 +11,19 @@ var initialState = {data: [], isLoading: false, error: null};
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case types.FETCH_GOT_HOUSES_REQUEST:
+        case types.SEND_IMAGE_REQUEST:
             return {
                 isLoading: true,
                 error: null,
                 data: []
             };
-        case types.FETCH_GOT_HOUSES_SUCCESS:
+        case types.SEND_IMAGE_SUCCESS:
             return {
                 isLoading: false,
                 error: null,
                 data: action.payload
             };
-        case types.FETCH_GOT_HOUSES_FAIL:
+        case types.SEND_IMAGE_FAIL:
             return {
                 isLoading: false,
                 error: action.payload,
