@@ -17,6 +17,7 @@ import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import KML from 'ol/format/KML.js';
 import GML from 'ol/format/GML.js';
+import GeoJSON from 'ol/format/GeoJSON.js';
 import BingMaps from 'ol/source/BingMaps.js';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 import Polygon from 'ol/geom/Polygon';
@@ -29,10 +30,19 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/backendActions";
 
 
-import file from '../../assets/GeokatalogExport.gml';
+import file from '../../assets/GeokatalogExport.kml';
+import file_json from '../../assets/SkiPistes.json';
 import kml_file from '../../assets/2012-02-10.kml';
 
+
+
+
+
 class OpenLayerMap extends Component {
+
+
+
+
 
     constructor(props) {
         super(props);
@@ -75,11 +85,11 @@ class OpenLayerMap extends Component {
         //------------------------------------------
         var KML_vector = new VectorLayer({
             source: new VectorSource({
-                url: kml_file,
+                url: file,
                 format: new KML()
             })
         });
-        KML_vector.set('name', 'testlayer')
+        KML_vector.set('name', 'slopelayer')
         var GML_vector = new VectorLayer({
             source: new VectorSource({
                 url: file,
@@ -119,7 +129,7 @@ class OpenLayerMap extends Component {
             }),
             raster,
             KML_vector,
-            Draw_vector,
+            Draw_vector
         ];
 
         var options = {
@@ -138,19 +148,19 @@ class OpenLayerMap extends Component {
         //------------------------------------------
         // Handlers
         //------------------------------------------
-        var modify = new Modify({source: source});
-        this.map.addInteraction(modify);
+        // var modify = new Modify({source: source});
+        // this.map.addInteraction(modify);
 
-        var draw, snap; // global so we can remove them later
-        var typeSelect = 'Point';
+        // var draw, snap; // global so we can remove them later
+        // var typeSelect = 'Point';
 
-        draw = new Draw({
-            source: source,
-            type: typeSelect
-        });
-        this.map.addInteraction(draw);
-        snap = new Snap({source: source});
-        this.map.addInteraction(snap);
+        // draw = new Draw({
+        //     source: source,
+        //     type: typeSelect
+        // });
+        // this.map.addInteraction(draw);
+        // snap = new Snap({source: source});
+        // this.map.addInteraction(snap);
 
         this.map.on('click', function(event) {
             //console.log(map)
@@ -246,7 +256,7 @@ class OpenLayerMap extends Component {
                         //alert(xhr.responseText);
                     }
                 }
-                xhr.open('POST', 'http://localhost:5000/prediction', true);
+                xhr.open('POST', 'http://172.31.201.157:5000/api/prediction', true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send(params);
                 //console.log(params)
