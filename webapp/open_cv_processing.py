@@ -21,9 +21,9 @@ def open_cv_processing(im):
     print('after')
     print(im)
 
-    kernel = np.ones((40,40),np.uint8)
+    kernel = np.ones((20,20),np.uint8)
 
-    ret, thresh = cv2.threshold(im, 200, 1, 0)
+    ret, thresh = cv2.threshold(im, 205, 1, 0)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
     print('thres')
     print(thresh)
@@ -32,21 +32,16 @@ def open_cv_processing(im):
     if (len(contours) > 1):
         minimum_distance = 10000000
         index = 0;
+        max_area = 0;
         for i in range(0,len(contours)):
-            #calculate centroid
-            M = cv2.moments(contours[i])
 
-            if( M['m00'] == 0 ):
-                pass
-            else:
-                x = int(M['m10']/M['m00'])
-                y = int(M['m01']/M['m00'])
+            area = cv2.contourArea(contours[i])
+            print('Area got ',area, ' pixels')
 
-                #distance from center
-                distance = np.sqrt((x-256)^2 + (y-256)^2)
-                if (distance < minimum_distance):
-                    minimum_distance = distance
-                    index = i
+            if(area>=max_area):
+                max_area = area
+                index = i
+                print("found new max area", i)
 
     Area = cv2.contourArea(contours[index])
     print(Area, "pixels")
