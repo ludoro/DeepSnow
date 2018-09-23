@@ -25,6 +25,10 @@ import Feature from 'ol/Feature';
 
 import { saveAs } from 'file-saver/FileSaver';
 
+import { connect } from "react-redux";
+import * as actions from "../../actions/backendActions";
+
+
 import file from '../../assets/GeokatalogExport.gml';
 import kml_file from '../../assets/2012-02-10.kml';
 
@@ -285,7 +289,20 @@ class OpenLayerMap extends Component {
     }
 }
 
-export default OpenLayerMap;
+
+const mapStateToProps = (state, props) => {
+    return {
+        backendData: state.backendData,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendImage: (image, coordinates) => dispatch(actions.sendImage(image, coordinates))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpenLayerMap);
 
 OpenLayerMap.propTypes = {
     lat: PropTypes.number,

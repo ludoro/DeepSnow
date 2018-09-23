@@ -6,7 +6,7 @@
  * @copyright: Niklas Kappler, 2018.
  */
 import { combineReducers } from 'redux';
-import example from './exampleReducer';
+import example from './backendReducer';
 
 export default combineReducers({
     // More reducers if there are
