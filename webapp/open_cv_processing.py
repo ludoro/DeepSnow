@@ -6,36 +6,42 @@ def open_cv_processing(im):
 
     #im = cv2.imread(im)
     #it may need to be inverted here
-    im = cv2.bitwise_not(im)
-    try:
-        imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-    except:
-        print('Image is already in greyscale')
-    _,imgray = cv2.threshold(im, 127,1,cv2.THRESH_BINARY)
+
+    #try:
+    #    imgray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    #except:
+    #    print('Image is already in greyscale')
+    #_,imgray = cv2.threshold(im, 0.5,1,cv2.THRESH_BINARY)
+    #imgray = im / 255
+    #imgray = cv2.cvtColor(imgray, cv2.CV_8UC1)
+    #print(imgray)
     #image = cv2.fastNlMeansDenoising(imgray,None,10,7,21)
-    kernel = np.ones((15,15),np.uint8)
-    image = cv2.morphologyEx(imgray, cv2.MORPH_OPEN, kernel)
-    ret, thresh = cv2.threshold(image, 0.5, 1, 0)
+    im = 255-im*255
+    im = im.astype(np.uint8)
+    print('after')
+    print(im)
+
+    kernel = np.ones((20,20),np.uint8)
+
+    ret, thresh = cv2.threshold(im, 205, 1, 0)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+    print('thres')
+    print(thresh)
     im2, contours, hiearchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     index = 0
     if (len(contours) > 1):
         minimum_distance = 10000000
         index = 0;
+        max_area = 0;
         for i in range(0,len(contours)):
-            #calculate centroid
-            M = cv2.moments(contours[i])
 
-            if( M['m00'] == 0 ):
-                pass
-            else:
-                x = int(M['m10']/M['m00'])
-                y = int(M['m01']/M['m00'])
+            area = cv2.contourArea(contours[i])
+            print('Area got ',area, ' pixels')
 
-                #distance from center
-                distance = np.sqrt((x-256)^2 + (y-256)^2)
-                if (distance < minimum_distance):
-                    minimum_distance = distance
-                    index = i
+            if(area>=max_area):
+                max_area = area
+                index = i
+                print("found new max area", i)
 
     Area = cv2.contourArea(contours[index])
     print(Area, "pixels")
@@ -56,8 +62,8 @@ def open_cv_processing(im):
     #cv2.drawContours(im,contours,-1, (255,255,0), 3)
 
     #Saves the image on that name, so when we use front end we just use img = ...
-    # cv2.imshow("draw contours",im)
-    # cv2.waitKey(0)
+    #cv2.imshow("draw contours",im)
+    #cv2.waitKey(0)
 
     #We can change the return values if we need to
     #json string is a list of points in reference to uppermost pixel
