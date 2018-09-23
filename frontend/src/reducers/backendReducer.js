@@ -7,7 +7,7 @@
  */
 import * as types from '../actions/actionTypes';
 
-var initialState = {data: [], isLoading: false, error: null};
+var initialState = {toggle: true, data: [], isLoading: false, error: null};
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -15,19 +15,29 @@ export default function (state = initialState, action) {
             return {
                 isLoading: true,
                 error: null,
-                data: []
+                data: [],
+                toggle: action.payload.toggle
             };
         case types.SEND_IMAGE_SUCCESS:
             return {
                 isLoading: false,
                 error: null,
-                data: action.payload
+                data: action.payload,
+                toggle: action.payload.toggle
             };
         case types.SEND_IMAGE_FAIL:
             return {
                 isLoading: false,
                 error: action.payload,
-                data: []
+                data: [],
+                toggle: action.payload.toggle
+            };
+        case types.TOGGLE_LAYER:
+            return{
+                isLoading: false,
+                error: null,
+                data: [],
+                toggle: action.payload
             };
         default:
             return state;

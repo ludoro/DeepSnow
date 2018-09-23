@@ -36,13 +36,26 @@ import kml_file from '../../assets/2012-02-10.kml';
 
 
 
-
-
 class OpenLayerMap extends Component {
 
 
 
+    componentWillReceiveProps(newProps) {
+        console.log(newProps);
+        this.map.getLayers().getArray().forEach(function(layer, i, array) {
+            if (layer.get('name') === 'slopelayer') {
+                try{
+                    layer.setVisible(newProps.backendData.toggle);
+                    console.log("oklayer")
+                }catch(err){
+                    console.log("noklayer")
+                }
 
+            }
+        }, this);
+
+
+    }
 
     constructor(props) {
         super(props);
@@ -89,7 +102,7 @@ class OpenLayerMap extends Component {
                 format: new KML()
             })
         });
-        KML_vector.set('name', 'slopelayer')
+        KML_vector.set('name', 'slopelayer');
         var GML_vector = new VectorLayer({
             source: new VectorSource({
                 url: file,
@@ -189,7 +202,7 @@ class OpenLayerMap extends Component {
                     }catch(err){
                         console.log("noklayer")
                     }
-                    
+
                 }
             }, this);
 
@@ -201,22 +214,22 @@ class OpenLayerMap extends Component {
                 // xhttp.send();
                 var params = 'x='+event.pixel[0]+'&y='+event.pixel[1]+'&img='+event.originalEvent.srcElement.toDataURL();
                 var xhr = new XMLHttpRequest();
-                
+
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == XMLHttpRequest.DONE) {
                         console.log(event.map)
                         console.log("responstext")
                         console.log(xhr.responseText)
 
-                       
+
 
 
                         try{
                             var myObj = JSON.parse(xhr.responseText);
                             console.log(myObj)
-                            
 
-                           
+
+
                             var newCoordinates = [];
                             for(var i in myObj){
                                 var coor = (myObj[i][0])
@@ -249,9 +262,9 @@ class OpenLayerMap extends Component {
                         }catch(err){
                             console.log("something wrong when parsing JSON"+err)
                         }
-                       
+
                         //map.getCoordinateFromPixel([event.pixel[0],event.pixel[1]]);
-                        
+
 
                         //alert(xhr.responseText);
                     }
@@ -267,7 +280,7 @@ class OpenLayerMap extends Component {
                 console.log("showing layers")
                 event.map.getLayers().getArray().forEach(function(layer, i, array) {
                     if (layer instanceof VectorLayer) {
-                        layer.setVisible(true);                        
+                        layer.setVisible(true);
                     }
                 }, this);
 
@@ -281,9 +294,9 @@ class OpenLayerMap extends Component {
             // console.log(event.coordinate);
             // console.log(event.pixel);
             // console.log(event.originalEvent.srcElement);
-            
-            
-            
+
+
+
 
         })
 

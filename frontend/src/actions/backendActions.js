@@ -42,3 +42,10 @@ export const sendImageFail = (err) => {
         payload: err
     };
 };
+
+export const toggleLayer = (bool) => {
+    return {
+        type: types.TOGGLE_LAYER,
+        payload: bool
+    };
+};

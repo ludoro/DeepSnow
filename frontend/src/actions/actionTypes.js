@@ -9,14 +9,11 @@
 /* ------------------------------------- */
 /* Action type definition          */
 /* ------------------------------------- */
-export const FETCH_GOT_HOUSES_REQUEST = 'FETCH_GOT_HOUSES_REQUEST';
-export const FETCH_GOT_HOUSES_SUCCESS = 'FETCH_GOT_HOUSES_SUCCESS';
-export const FETCH_GOT_HOUSES_FAIL = 'FETCH_GOT_HOUSES_FAIL';
-
 export const SEND_IMAGE_REQUEST = 'SEND_IMAGE_REQUEST';
 export const SEND_IMAGE_SUCCESS = 'SEND_IMAGE_SUCCESS';
 export const SEND_IMAGE_FAIL = 'SEND_IMAGE_FAIL';
 
+export const TOGGLE_LAYER = 'TOGGLE_LAYER';
 
 /* ------------------------------------- */
 /* Game of Thrones API settings          */

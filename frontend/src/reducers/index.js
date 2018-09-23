@@ -6,10 +6,10 @@
  * @copyright: Niklas Kappler, 2018.
  */
 import { combineReducers } from 'redux';
-import example from './backendReducer';
+import backendData from './backendReducer';
 
 export default combineReducers({
     // More reducers if there are
     // can go here
-    example
+    backendData
 })
