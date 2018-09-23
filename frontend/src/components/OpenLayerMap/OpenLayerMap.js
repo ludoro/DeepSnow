@@ -73,6 +73,7 @@ class OpenLayerMap extends Component {
                 format: new KML()
             })
         });
+        KML_vector.set('name', 'testlayer')
         var GML_vector = new VectorLayer({
             source: new VectorSource({
                 url: file,
@@ -146,15 +147,86 @@ class OpenLayerMap extends Component {
         this.map.addInteraction(snap);
 
         this.map.on('click', function(event) {
-            console.log('i am here');
-            console.log(event.coordinate);
-            console.log(event.pixel);
-            console.log(event.originalEvent.srcElement);
-            
+            //console.log(map)
+            console.log("event map")
+            console.log(event.map)
+            console.log("event map getleyaeres")
+            console.log(event.map.getLayers())
+            //event.map.removeLayer('testlayer')
+            //layer.setVisibility(true)
 
-            event.originalEvent.srcElement.toBlob(function(blob) {
-                saveAs(blob, 'map.png');
-            });
+
+            // event.map.once('rendercomplete', function(event) {
+            //     console.log("redner done")
+            //     console.log(event)
+            //     event.originalEvent.srcElement.toBlob(function(blob) {
+            //         saveAs(blob, 'map.png');
+            //     });
+            // });
+
+
+            event.map.getLayers().getArray().forEach(function(layer, i, array) {
+                if (layer instanceof VectorLayer) {
+                    try{
+                        layer.setVisible(false);
+                        console.log("oklayer")
+                    }catch(err){
+                        console.log("noklayer")
+                    }
+                    
+                }
+            }, this);
+
+            setTimeout(function(){
+                //event.originalEvent.srcElement.toBlob(function(blob) {
+                // saveAs(blob, 'map.png');
+                // var xhttp = new XMLHttpRequest();
+                // xhttp.open("GET", "demo_get2.asp?fname=Henry&lname=Ford", true);
+                // xhttp.send();
+                var params = 'x='+event.pixel[0]+'&y='+event.pixel[1]+'&img='+event.originalEvent.srcElement.toDataURL();
+                var xhr = new XMLHttpRequest();
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        console.log(event.map)
+                        console.log("responstext")
+                        console.log(xhr.responseText)
+                        // myObj = JSON.parse(xhr.responseText);
+                        // console.log(myObj)
+
+                        
+
+                        alert(xhr.responseText);
+                    }
+                }
+                xhr.open('POST', 'http://localhost:5000/prediction', true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(params);
+                //console.log(params)
+
+            //});
+        }, 500);
+            setTimeout(function(){
+                console.log("showing layers")
+                event.map.getLayers().getArray().forEach(function(layer, i, array) {
+                    if (layer instanceof VectorLayer) {
+                        layer.setVisible(true);                        
+                    }
+                }, this);
+
+            }, 1500);
+
+            // vectorLayerArray.forEach(function(aVecLayer) {
+            //     //aVecLayer.getSource();
+            //     aVecLayer.setVisibility(false)
+            // })
+            // console.log('i am here');
+            // console.log(event.coordinate);
+            // console.log(event.pixel);
+            // console.log(event.originalEvent.srcElement);
+            
+            
+            
 
         })
 
