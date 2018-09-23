@@ -279,7 +279,7 @@ class OpenLayerMap extends Component {
             setTimeout(function(){
                 console.log("showing layers")
                 event.map.getLayers().getArray().forEach(function(layer, i, array) {
-                    if (layer instanceof VectorLayer) {
+                    if (layer instanceof VectorLayer && layer.get('name') !== 'slopelayer') {
                         layer.setVisible(true);
                     }
                 }, this);
