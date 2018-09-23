@@ -2,7 +2,7 @@ import io
 import numpy as np
 
 import flask
-# from model import *
+from model_fixed import unet
 from PIL import Image
 from flask import Flask, render_template
 from flask_cors import CORS
@@ -12,6 +12,9 @@ from flask import request
 #from flask_restful import Resource, Api, reqparse, abort
 #from opencv import open_cv_processing
 
+#from neuronal_network.unet.model import unet
+
+
 app = Flask(__name__)
 CORS(app)
 
@@ -19,17 +22,18 @@ CORS(app)
 #    # load the pre-trained Keras model (here we are using a model
 #    # pre-trained on ImageNet and provided by Keras, but you can
 #    # substitute in your own networks just as easily)
-#    global model
-#    model = unet()
-#    model.load_weights("unet_membrane.hdf5")
+
+global model
+model = unet()
+#model.load_weights("unet_membrane.hdf5")
 
 
 
 import base64
 @app.route("/prediction", methods=['POST'])
 def image_prediction():
-    x = request.form["x"]
-    y = request.form["y"]
+    x = int(request.form["x"])
+    y = int(request.form["y"])
     print("x,y",x,y)
     
     print(request)
@@ -50,7 +54,7 @@ def image_prediction():
         # #ImageFile.LOAD_TRUNCATED_IMAGES = True
         image = Image.open(iout)
 
-        image.save('test.png')
+        
 
         #image = Image.open(io.BytesIO(image))
 
@@ -60,15 +64,23 @@ def image_prediction():
 
         #image = image.resize((512,512))
 
-        # preds = model.predict(image)
+        image = model.predict(image)
 
         # img = Image()
         # img.getdata(preds)
         #image.show()
 
+        #image = image.crop((x-25, y+25,x+25,y-25))
+        image.save('test.png')
         print("got image, processing")
 
         image_cv = np.array(image)
+
+        image_cv = image_cv[x-255:x+256, y-255:y+256]
+
+        impil = Image.fromarray(image_cv)
+        impil.save('crop.png')
+
         poly_json, area = open_cv_processing(image_cv)
 
         #data["predictions"] = []

@@ -19,7 +19,9 @@ import KML from 'ol/format/KML.js';
 import GML from 'ol/format/GML.js';
 import BingMaps from 'ol/source/BingMaps.js';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
-import Poligon from 'ol/geom/Polygon';
+import Polygon from 'ol/geom/Polygon';
+import Vector from 'ol/layer/Vector';
+import Feature from 'ol/Feature';
 
 import { saveAs } from 'file-saver/FileSaver';
 
@@ -191,12 +193,53 @@ class OpenLayerMap extends Component {
                         console.log(event.map)
                         console.log("responstext")
                         console.log(xhr.responseText)
-                        // myObj = JSON.parse(xhr.responseText);
-                        // console.log(myObj)
 
+                       
+
+
+                        try{
+                            var myObj = JSON.parse(xhr.responseText);
+                            console.log(myObj)
+                            
+
+                           
+                            var newCoordinates = [];
+                            for(var i in myObj){
+                                var coor = (myObj[i][0])
+                                coor = [parseInt(coor[0])+event.pixel[0]-256, parseInt(coor[1])+event.pixel[1]-256]
+                                var coorgeo = event.map.getCoordinateFromPixel(coor);
+                                newCoordinates.push(coorgeo);
+                            }
+                            newCoordinates.push(newCoordinates[0].slice());
+
+                            var polygon = new Polygon([newCoordinates]);
+
+                            // Create feature with polygon.
+                            var feature = new Feature(polygon);
+
+                            // Create vector source and the feature to it.
+                            var vectorSource = new VectorSource();
+                            vectorSource.addFeature(feature);
+
+                            // Create vector layer attached to the vector source.
+                            var vectorLayer = new Vector({
+                                source: vectorSource
+                            });
+
+                            // Add the vector layer to the map.
+                            event.map.addLayer(vectorLayer);
+
+
+
+
+                        }catch(err){
+                            console.log("something wrong when parsing JSON"+err)
+                        }
+                       
+                        //map.getCoordinateFromPixel([event.pixel[0],event.pixel[1]]);
                         
 
-                        alert(xhr.responseText);
+                        //alert(xhr.responseText);
                     }
                 }
                 xhr.open('POST', 'http://localhost:5000/prediction', true);
