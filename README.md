@@ -1,12 +1,12 @@
 ![Screenshot](logo.png)
 
-##Intro
+## Intro
 
 DeepSnow is the winning project for the challenge provided by TechnoAlp for the
 Hackaton [Hack the alps](https://www.hackthealps.it). We were asked to detect a
 ski slope by analyzing a satellite image.
 
-##Solution
+## Solution
 We gathered data from various sources, such as: NASA, OpenStreetMaps, OpenSnowMap,
 OpenData. Then, we used a deep learning framework called U-net, using Keras.
 After that, we used opencv to create a polygon to calculate the area of the slope.
@@ -17,9 +17,9 @@ with the polygon being drawn in the area that was screenshotted. Below you can
 see an example of the process:
 ![Data](Data_pipeline.png)
 
-##Technology used
+## Technology used
 Keras, Opencv, React and Flask.
 
-##Credits
+## Credits
 
 @niklaskappler, @thomasverelst, @agemcipe
