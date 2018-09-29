@@ -9,14 +9,14 @@
 /* ------------------------------------- */
 /* Action type definition          */
 /* ------------------------------------- */
-export const SEND_IMAGE_REQUEST = 'SEND_IMAGE_REQUEST';
-export const SEND_IMAGE_SUCCESS = 'SEND_IMAGE_SUCCESS';
-export const SEND_IMAGE_FAIL = 'SEND_IMAGE_FAIL';
+// export const SEND_IMAGE_REQUEST = 'SEND_IMAGE_REQUEST';
+// export const SEND_IMAGE_SUCCESS = 'SEND_IMAGE_SUCCESS';
+// export const SEND_IMAGE_FAIL = 'SEND_IMAGE_FAIL';
 
 export const TOGGLE_LAYER = 'TOGGLE_LAYER';
 
 /* ------------------------------------- */
-/* Game of Thrones API settings          */
+/* API settings          */
 /* ------------------------------------- */
 export const BACKEND_API_HTTPS = false;
 export const BACKEND_API_URL = 'localhost';

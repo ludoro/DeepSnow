@@ -11,27 +11,27 @@ var initialState = {toggle: true, data: [], isLoading: false, error: null};
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case types.SEND_IMAGE_REQUEST:
-            return {
-                isLoading: true,
-                error: null,
-                data: [],
-                toggle: action.payload.toggle
-            };
-        case types.SEND_IMAGE_SUCCESS:
-            return {
-                isLoading: false,
-                error: null,
-                data: action.payload,
-                toggle: action.payload.toggle
-            };
-        case types.SEND_IMAGE_FAIL:
-            return {
-                isLoading: false,
-                error: action.payload,
-                data: [],
-                toggle: action.payload.toggle
-            };
+        // case types.SEND_IMAGE_REQUEST:
+        //     return {
+        //         isLoading: true,
+        //         error: null,
+        //         data: [],
+        //         toggle: action.payload.toggle
+        //     };
+        // case types.SEND_IMAGE_SUCCESS:
+        //     return {
+        //         isLoading: false,
+        //         error: null,
+        //         data: action.payload,
+        //         toggle: action.payload.toggle
+        //     };
+        // case types.SEND_IMAGE_FAIL:
+        //     return {
+        //         isLoading: false,
+        //         error: action.payload,
+        //         data: [],
+        //         toggle: action.payload.toggle
+        //     };
         case types.TOGGLE_LAYER:
             return{
                 isLoading: false,
