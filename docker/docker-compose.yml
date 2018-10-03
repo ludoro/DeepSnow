@@ -1,0 +1,24 @@
+version: '3'
+services:
+  frontend:
+    build:
+      dockerfile: frontend/Dockerfile
+      context: .
+    volumes:
+      - ./frontend/src:/frontend/src/
+      - ./frontend/package.json:/frontend/package.json
+    ports:
+      - "80:3000"
+    depends_on:
+     - webapp
+  webapp:
+    build:
+      dockerfile: webapp/Dockerfile
+      context: .
+    volumes:
+      - ./webapp/src:/application
+      - ./webapp/model:/model
+    ports:
+      - "5000:5000"
+volumes:
+    db_data:

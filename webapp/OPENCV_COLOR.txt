@@ -1,3 +1,0 @@
-In the processed image(input) the forest is white and the slope is black. 
-However, I need to select the slope, so I exchange colors. 
-Then, in the image_with_contour.jpg the contour is on the white part, because that now is the slope. 
