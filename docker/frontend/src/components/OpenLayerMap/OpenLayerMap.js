@@ -261,7 +261,12 @@ class OpenLayerMap extends Component {
                     }
                 }
                 // xhr.open('POST', 'http://172.31.201.157:5000/api/prediction', true); // <-- external backend
-                xhr.open('POST', 'http://localhost:5000/api/prediction', true);
+
+                var URI =  window.location.href;
+                var URL = URI.substr(0, URI.length-1) + ':5000/api/prediction';
+                console.log(URL);
+                xhr.open('POST', URL, true);
+
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send(params);
                 //console.log(params)

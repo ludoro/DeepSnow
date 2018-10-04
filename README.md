@@ -24,22 +24,34 @@ Keras, Opencv, React and Flask.
 The project consists of a backend (wepapp in Python) and frontend (ReactJS). You can run the application either the 
 Docker way or run it directly via a conda and node.
  
-### 4.1 Docker installation
-You need to have docker installed on your system. Take a look [here](https://docs.docker.com/install/), for the official 
-installation instructions for docker CE. 
+### 4.1 The Docker way
+You need to have `docker` and `docker-compose` installed on your system. Take a look [here](https://docs.docker.com/install/), for the official 
+installation instructions for docker CE. And [here](https://docs.docker.com/compose/install/#install-compose) for docker-compose.
+Docker provides the advantage of encapsulating dependencies and version incopabilities between application and local host.
 
-Docker provides the advantage of encapsulating dependencies and version incopabilities
- between application and local host.   
+First clone this repository and move into the folder.
+
+```
+git clone https://github.com/ludoro/DeepSnow.git
+cd DeepSnow
+```
+
+Afterwards download the pre trained neuronal network weights from [here](https://www.dropbox.com/s/3xc68qpo0qkghmp/unet_membrane.hdf5?dl=0I) 
+
+```
+wget https://www.dropbox.com/s/3xc68qpo0qkghmp/unet_membrane.hdf5 -P ./docker/webapp/model/
+```
 
 To start the application run the follwoing command from terminal inside the `docker` folder
 
 ```
+cd docker/
 docker-compose build && docker-compose up
 ```
 
 Then open your browser on `http://localhost`. 
 
-### 4.2 Directly installation 
+### 4.2 The Directly way 
 These Following steps were tested on a Ubuntu 18.04 installation.
 
 #### Backend
