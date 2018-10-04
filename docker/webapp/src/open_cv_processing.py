@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import json
 
-def open_cv_processing(im):
+def open_cv_processing(im, DEBUG=False):
 
     #im = cv2.imread(im)
     #it may need to be inverted here
@@ -18,15 +18,18 @@ def open_cv_processing(im):
     #image = cv2.fastNlMeansDenoising(imgray,None,10,7,21)
     im = 255-im*255
     im = im.astype(np.uint8)
-    print('after')
-    print(im)
+
+    if (DEBUG):
+        print('after')
+        print(im)
 
     kernel = np.ones((20,20),np.uint8)
 
     ret, thresh = cv2.threshold(im, 205, 1, 0)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
-    print('thres')
-    print(thresh)
+    if (DEBUG):
+        print('thres')
+        print(thresh)
     im2, contours, hiearchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     index = 0
     if (len(contours) > 1):
@@ -36,15 +39,18 @@ def open_cv_processing(im):
         for i in range(0,len(contours)):
 
             area = cv2.contourArea(contours[i])
-            print('Area got ',area, ' pixels')
+            if (DEBUG):
+                print('Area got ',area, ' pixels')
 
             if(area>=max_area):
                 max_area = area
                 index = i
-                print("found new max area", i)
+                if (DEBUG):
+                    print("found new max area", i)
 
     Area = cv2.contourArea(contours[index])
-    print(Area, "pixels")
+    if (DEBUG):
+        print(Area, "pixels")
 
 
     #If we want the polygon

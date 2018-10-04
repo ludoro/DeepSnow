@@ -7,6 +7,9 @@ from PIL import Image
 from flask_cors import CORS
 from open_cv_processing import *
 
+
+DEBUG=False
+
 app = Flask(__name__)
 CORS(app) # allow cross referenced AJAX calls when backend is running on external server
 
@@ -23,11 +26,10 @@ def load_model():
 
 @app.route("/api/prediction", methods=['POST'])
 def image_prediction():
-    print(request)
-    print('test')
     x = int(float(request.form["x"]))
     y = int(float(request.form["y"]))
-    print("x,y", x, y)
+    if (DEBUG):
+        print("x,y", x, y)
 
     print(request)
     if request.form["img"]:
@@ -37,7 +39,8 @@ def image_prediction():
         # iout = io.BytesIO(imgdata)
         # iout.seek(0)
         # image = Image.open(iout)
-        print(request.form["img"][0:100])
+        if (DEBUG):
+            print(request.form["img"][0:100])
         image_data = request.form["img"].replace('data:image/png;base64,', '').replace(' ', '+')
         # #print("image data,",image_data[0:100])
         # datta = base64.b64decode(image_data.split(",")[1])
@@ -52,7 +55,9 @@ def image_prediction():
         if image.mode != "L":
             image = image.convert("L")
         # resize the input image and preprocess it
-        image.show()
+
+        if (DEBUG):
+            image.show()
         #image = image.resize((512, 512))
 
 
@@ -62,15 +67,16 @@ def image_prediction():
 
 
         image = model.predict(img_np/255.0)
-        print(image)
         imageshow = Image.fromarray(np.squeeze(np.squeeze(image, 3), 0) * 255)
-        imageshow.show()
+        if (DEBUG):
+            print(image)
+            imageshow.show()
         image = np.squeeze(np.squeeze(image, 3), 0)
 
         image_cv = image
-        poly_json, area = open_cv_processing(image_cv)
-
-        print("polyjson", poly_json)
+        poly_json, area = open_cv_processing(image_cv, DEBUG=DEBUG)
+        if (DEBUG):
+            print("polyjson", poly_json)
 
         return poly_json
 
@@ -84,4 +90,4 @@ def home():
 
 if __name__ == "__main__":
     load_model()
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=DEBUG)
