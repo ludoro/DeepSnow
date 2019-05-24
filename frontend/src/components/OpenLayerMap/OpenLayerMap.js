@@ -10,31 +10,31 @@ import PropTypes from 'prop-types';
 
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
-import {Draw, Modify, Snap} from 'ol/interaction.js';
+//import {Draw, Modify, Snap} from 'ol/interaction.js';
 import TileLayer from 'ol/layer/Tile.js';
 import OSM from 'ol/source/OSM.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import KML from 'ol/format/KML.js';
 import GML from 'ol/format/GML.js';
-import GeoJSON from 'ol/format/GeoJSON.js';
+//import GeoJSON from 'ol/format/GeoJSON.js';
 import BingMaps from 'ol/source/BingMaps.js';
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style.js';
 import Polygon from 'ol/geom/Polygon';
 import Vector from 'ol/layer/Vector';
 import Feature from 'ol/Feature';
 
-import { saveAs } from 'file-saver/FileSaver';
+//import { saveAs } from 'file-saver/FileSaver';
 
 import { connect } from "react-redux";
-import * as actions from "../../actions/backendActions";
+//import * as actions from "../../actions/backendActions";
 
 
 import file from '../../assets/GeokatalogExport.kml';
 import file_json from '../../assets/SkiPistes.json';
 import kml_file from '../../assets/2012-02-10.kml';
 
-
+import * as proj from 'ol/proj';
 
 class OpenLayerMap extends Component {
 
@@ -149,9 +149,9 @@ class OpenLayerMap extends Component {
             layers: this.layers,
             target: this.mapRef.current,
             view: new View({
-                center: [this.props.lat, this.props.lon],
+                center:  proj.fromLonLat([11.937110,46.752674]),//[this.props.lat, this.props.lon],
                 projection: 'EPSG:3857',
-                zoom: this.props.zoom
+                zoom: 17//this.props.zoom
             })
         };
 
@@ -216,7 +216,7 @@ class OpenLayerMap extends Component {
                 var xhr = new XMLHttpRequest();
 
                 xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
                         console.log(event.map)
                         console.log("responstext")
                         console.log(xhr.responseText)
@@ -269,7 +269,8 @@ class OpenLayerMap extends Component {
                         //alert(xhr.responseText);
                     }
                 }
-                xhr.open('POST', 'http://172.31.201.157:5000/api/prediction', true);
+                // xhr.open('POST', 'http://172.31.201.157:5000/api/prediction', true); // <-- external backend
+                xhr.open('POST', 'http://localhost:5000/api/prediction', true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.send(params);
                 //console.log(params)
@@ -319,16 +320,17 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        sendImage: (image, coordinates) => dispatch(actions.sendImage(image, coordinates))
-    }
-};
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         sendImage: (image, coordinates) => dispatch(actions.sendImage(image, coordinates))
+//     }
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenLayerMap);
+export default connect(mapStateToProps)(OpenLayerMap);
 
 OpenLayerMap.propTypes = {
     lat: PropTypes.number,
     lon: PropTypes.number,
     zoom: PropTypes.number
 };
+
